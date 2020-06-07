@@ -1,10 +1,10 @@
-package com.example.fotofiltry
+package com.example.fotofiltry.ui.Home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.fotofiltry.R
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
