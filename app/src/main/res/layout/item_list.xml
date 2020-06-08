@@ -11,7 +11,7 @@
             type="com.example.fotofiltry.data.PhotoModel"/>
         <variable
             name="listener"
-            type="com.example.fotofiltry.ui.Home.HomeItemAdapter.HomeListener"
+            type="com.example.fotofiltry.ui.home.HomeItemAdapter.HomeListener"
             />
     </data>
 

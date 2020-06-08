@@ -1,4 +1,4 @@
-package com.example.fotofiltry.ui.Home
+package com.example.fotofiltry.ui.home
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fotofiltry.R
 import com.example.fotofiltry.databinding.ItemListBinding
-import kotlinx.android.synthetic.main.item_list.view.*
 
 class HomeItemAdapter (private val list: MutableList<PhotoModel>, val fragmentManager: FragmentManager):
         RecyclerView.Adapter<HomeItemAdapter.HomeViewHolder>(){
