@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.fotofiltry.R
@@ -77,7 +78,7 @@ class CameraActivity: AppCompatActivity() {
             try {
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
-
+                viewFinder.preferredImplementationMode = PreviewView.ImplementationMode.SURFACE_VIEW
                 // Bind use cases to camera
                 camera = cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview)
