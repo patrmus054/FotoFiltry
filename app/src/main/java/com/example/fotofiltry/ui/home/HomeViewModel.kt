@@ -1,23 +1,36 @@
 package com.example.fotofiltry.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
 import com.example.fotofiltry.R
 import com.example.fotofiltry.data.Filter
 import com.example.fotofiltry.data.PhotoModel
+import com.example.fotofiltry.data.PhotoModelRoomDatabase
+import com.example.fotofiltry.data.PhotoRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class HomeViewModel: ViewModel() {
+class HomeViewModel(application: Application): AndroidViewModel(application) {
 
     var _item: MutableLiveData<List<PhotoModel>> = MutableLiveData()
-    val item: LiveData<List<PhotoModel>> get() = _item
+    var item: LiveData<List<PhotoModel>> get() = _item
+    private val repository: PhotoRepository
+
+    init {
+        val photosDAO = PhotoModelRoomDatabase.getDatabase(application, viewModelScope).PhotoDAO()
+        repository = PhotoRepository(photosDAO)
+        item = repository.allPhotos
+    }
+
+    fun insert(photo: PhotoModel) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insert(photo)
+    }
 
     fun getPhotos(){
-
         val result: MutableList<PhotoModel> = ArrayList<PhotoModel>()
-        result.add( PhotoModel(0,"photo1","30.04.2020", Filter.FILTERNAME1))
-        result.add( PhotoModel(1,"photo2","31.04.2020", Filter.FILTERNAME2))
-        result.add( PhotoModel(2,"photo3","29.04.2020", Filter.FILTERNAME3))
+        result.add( PhotoModel(0,"photo1","30.04.2020"))
+        result.add( PhotoModel(1,"photo2","31.04.2020"))
+        result.add( PhotoModel(2,"photo3","29.04.2020"))
         //todo handling data gathering form bd and assign them to var result
         //temp hard implementation
 
