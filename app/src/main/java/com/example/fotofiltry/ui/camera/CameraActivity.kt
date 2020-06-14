@@ -72,13 +72,13 @@ class CameraActivity: AppCompatActivity() {
         cameraProviderFuture.addListener(Runnable {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
             val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
-
+            imageCapture = ImageCapture.Builder().build()
             preview = Preview.Builder().build()
 
             try {
                 cameraProvider.unbindAll()
                 viewFinder.preferredImplementationMode = PreviewView.ImplementationMode.SURFACE_VIEW
-                camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview)
+                camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
                 preview?.setSurfaceProvider(viewFinder.createSurfaceProvider())
 
             } catch(exc: Exception) {
@@ -87,13 +87,12 @@ class CameraActivity: AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
 
 
-        imageCapture = ImageCapture.Builder().build()
     }
 
     private fun takePhoto() {
 
         val imageCapture = imageCapture ?: return
-        val photoFile = File(outputDirectory,SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) + ".jpg")
+        val photoFile = File(outputDirectory,SimpleDateFormat(FILENAME_FORMAT, Locale.ENGLISH).format(System.currentTimeMillis()) + ".jpg")
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
         imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
 
@@ -106,7 +105,7 @@ class CameraActivity: AppCompatActivity() {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
                     val replyIntent = Intent()
-                    replyIntent.putExtra(EXTRA_REPLY, msg)
+                    replyIntent.putExtra(EXTRA_REPLY, savedUri)
                     setResult(Activity.RESULT_OK, replyIntent)
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)

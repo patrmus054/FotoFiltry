@@ -26,14 +26,14 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
         repository.insert(photo)
     }
 
-    fun getPhotos(){
-        val result: MutableList<PhotoModel> = ArrayList<PhotoModel>()
-        result.add( PhotoModel(0,"photo1","30.04.2020"))
-        result.add( PhotoModel(1,"photo2","31.04.2020"))
-        result.add( PhotoModel(2,"photo3","29.04.2020"))
-        //todo handling data gathering form bd and assign them to var result
-        //temp hard implementation
-
-        _item.value = result
-    }
+//    fun getPhotos(){
+//        val result: MutableList<PhotoModel> = ArrayList<PhotoModel>()
+//        result.add( PhotoModel(0,"photo1","30.04.2020"))
+//        result.add( PhotoModel(1,"photo2","31.04.2020"))
+//        result.add( PhotoModel(2,"photo3","29.04.2020"))
+//        //todo handling data gathering form bd and assign them to var result
+//        //temp hard implementation
+//
+//        _item.value = result
+//    }
 }

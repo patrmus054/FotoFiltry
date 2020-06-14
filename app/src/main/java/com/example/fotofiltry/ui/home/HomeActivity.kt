@@ -17,7 +17,9 @@ import com.example.fotofiltry.data.PhotoModel
 import com.example.fotofiltry.ui.camera.CameraActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_list.*
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -41,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
 
         if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
             data?.getStringExtra(CameraActivity.EXTRA_REPLY)?.let {
-                val photoModel = PhotoModel(1, it, "20200614")
+                val photoModel = PhotoModel("photo", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH).format(System.currentTimeMillis()), it)
                 homeViewModel.insert(photoModel)
             }
         } else {
