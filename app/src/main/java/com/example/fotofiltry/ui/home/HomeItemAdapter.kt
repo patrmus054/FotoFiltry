@@ -1,15 +1,20 @@
 package com.example.fotofiltry.ui.home
 
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import com.example.fotofiltry.data.PhotoModel
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fotofiltry.R
+import com.example.fotofiltry.data.PhotoModel
 import com.example.fotofiltry.databinding.ItemListBinding
+import java.io.File
+
 
 class HomeItemAdapter (private val list: MutableList<PhotoModel>, val fragmentManager: FragmentManager):
         RecyclerView.Adapter<HomeItemAdapter.HomeViewHolder>(){
@@ -58,6 +63,8 @@ class HomeItemAdapter (private val list: MutableList<PhotoModel>, val fragmentMa
                 listener = homeListener
                 title.text = model.title
                 date.text = model.date
+                val rawTakenImage = BitmapFactory.decodeFile(Uri.decode(model.location))
+                imageView.setImageBitmap(rawTakenImage)
 
             }
         }
@@ -66,4 +73,16 @@ class HomeItemAdapter (private val list: MutableList<PhotoModel>, val fragmentMa
     interface HomeListener {
         fun onItemSelected(item: PhotoModel)
     }
+}
+
+fun getPhotoFileUri(fileName: String): Uri? {
+    // Get safe storage directory for photos
+    val mediaStorageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "APP_TAG")
+
+    // Create the storage directory if it does not exist
+    if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+        Log.d("APP_TAG", "failed to create directory")
+    }
+    // Return the file target for the photo based on filename
+    return Uri.fromFile(File(mediaStorageDir.getPath() + File.separator.toString() + fileName))
 }
