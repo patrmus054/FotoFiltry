@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FotoFiltry</string>
+    <string name="title_activity_filter">MainActivity</string>
+    <string name="title_filter_1">Filter1</string>
+    <string name="title_filter_2">Filter2</string>
+    <string name="title_filter_3">Filter3</string>
 </resources>

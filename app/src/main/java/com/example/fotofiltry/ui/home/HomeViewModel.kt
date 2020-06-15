@@ -24,17 +24,17 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun insert(photo: PhotoModel) {
-        Log.w("insert", "Jestem0" + photo.location)
         viewModelScope.launch(Dispatchers.IO) {
-            Log.w("insert", "Jestem1" + photo.location)
             repository.insert(photo)
-            Log.w("insert", "Jestem2" + photo.location)
             _item.postValue(repository.getAllPhotos())
         }
-
-        Log.w("insert", "Jestem3" + photo.location)
     }
-
+    fun update(photo: PhotoModel){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.update(photo)
+            _item.postValue(repository.getAllPhotos())
+        }
+    }
     fun getAllPhotos() {
         viewModelScope.launch(Dispatchers.IO) {
             val photos = repository.getAllPhotos()

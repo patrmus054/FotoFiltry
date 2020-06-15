@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_filter_2">
+
+    <fragment
+        android:id="@+id/navigation_filter_1"
+        android:name="com.example.fotofiltry.ui.filter.ui.FilterTwoFragment"
+        android:label="@string/title_filter_1"
+        tools:layout="@layout/fragment_filter_2" />
+
+    <fragment
+        android:id="@+id/navigation_filter_2"
+        android:name="com.example.fotofiltry.ui.filter.ui.FilterOneFragment"
+        android:label="@string/title_filter_2"
+        tools:layout="@layout/fragment_filter_1" />
+
+    <fragment
+        android:id="@+id/navigation_filter_3"
+        android:name="com.example.fotofiltry.ui.filter.ui.FilterThreeFragment"
+        android:label="@string/title_filter_3"
+        tools:layout="@layout/fragment_filter_3" />
+</navigation>

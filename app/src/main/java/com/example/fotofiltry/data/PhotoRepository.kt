@@ -11,4 +11,7 @@ class PhotoRepository(private val PhotoDao: PhotoModelDAO) {
     suspend fun insert(photo: PhotoModel) {
         PhotoDao.insert(photo)
     }
+    suspend fun update(photo: PhotoModel){
+        PhotoDao.update(photo)
+    }
 }
