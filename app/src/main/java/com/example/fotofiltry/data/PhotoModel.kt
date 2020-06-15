@@ -11,5 +11,5 @@ data class PhotoModel (
     @ColumnInfo(name = "location") val location: String
 //    @ColumnInfo(name = "filter") val filter: Filter
 ){
-    @PrimaryKey(autoGenerate = true) val photoId : Int = 0
+    @PrimaryKey(autoGenerate = true) var photoId : Int = 0
 }

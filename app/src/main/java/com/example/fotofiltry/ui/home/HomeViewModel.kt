@@ -1,6 +1,7 @@
 package com.example.fotofiltry.ui.home
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.fotofiltry.R
 import com.example.fotofiltry.data.Filter
@@ -22,8 +23,15 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
         item = repository.allPhotos
     }
 
-    fun insert(photo: PhotoModel) = viewModelScope.launch(Dispatchers.IO) {
+    fun insert(photo: PhotoModel){
+        Log.w("insert", "Jestem0" + photo.location)
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.w("insert", "Jestem1" + photo.location)
         repository.insert(photo)
+            Log.w("insert", "Jestem2" + photo.location)
+        }
+        item = repository.allPhotos
+        Log.w("insert", "Jestem3" + photo.location)
     }
 
 //    fun getPhotos(){
