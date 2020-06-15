@@ -9,7 +9,7 @@ import androidx.room.Query;
 @Dao
 interface PhotoModelDAO {
     @Query("SELECT * from photo_table ORDER BY title ASC")
-    fun getAllPhotos(): LiveData<List<PhotoModel>>
+    fun getAllPhotos(): List<PhotoModel>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(photoModel: PhotoModel)
