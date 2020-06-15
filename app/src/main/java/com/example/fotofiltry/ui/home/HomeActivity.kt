@@ -35,7 +35,7 @@ class HomeActivity : AppCompatActivity() {
         setUpToolbar()
 
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        //homeViewModel.getPhotos()
+        homeViewModel.getAllPhotos()
 
     }
 
@@ -44,7 +44,7 @@ class HomeActivity : AppCompatActivity() {
         Log.w("insert", "Jestem-2" )
         if (requestCode == newPhotoActivityRequestCode && resultCode == Activity.RESULT_OK) {
             Log.w("insert", "Jestem-1" )
-            val it = intent?.extras?.getString(CameraActivity.EXTRA_REPLY)
+            val it = data?.extras?.getString(CameraActivity.EXTRA_REPLY)
             Log.w("insert", "Jestem-0.7$it")
             val photoModel = PhotoModel("photo", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH).format(System.currentTimeMillis()), it!!)
             Log.w("insert", "Jestem-0.5" )

@@ -105,7 +105,7 @@ class CameraActivity: AppCompatActivity() {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
                     val replyIntent = Intent()
-                    replyIntent.putExtra(EXTRA_REPLY, savedUri)
+                    replyIntent.putExtra(EXTRA_REPLY, savedUri.path)
                     setResult(Activity.RESULT_OK, replyIntent)
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
