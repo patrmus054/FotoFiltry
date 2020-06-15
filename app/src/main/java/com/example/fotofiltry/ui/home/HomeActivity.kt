@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fotofiltry.R
 import com.example.fotofiltry.data.PhotoModel
 import com.example.fotofiltry.ui.camera.CameraActivity
+import com.example.fotofiltry.ui.camera.CameraActivity.Companion.EXTRA_REPLY
+import com.example.fotofiltry.ui.filter.FilterActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_list.*
 import java.text.SimpleDateFormat
@@ -28,6 +30,8 @@ class HomeActivity : AppCompatActivity() {
     lateinit var homeAdapter: HomeItemAdapter
     lateinit var homeViewModel: HomeViewModel
     private val newPhotoActivityRequestCode = 1
+    private val newFilterActivityRequestCode = 2
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,28 +45,28 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.w("insert", "Jestem-2" )
-        if (requestCode == newPhotoActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            Log.w("insert", "Jestem-1" )
-            val it = data?.extras?.getString(CameraActivity.EXTRA_REPLY)
-            Log.w("insert", "Jestem-0.7$it")
-            val photoModel = PhotoModel("photo", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH).format(System.currentTimeMillis()), it!!)
-            Log.w("insert", "Jestem-0.5" )
-            homeViewModel.insert(photoModel)
-            homeAdapter.notifyDataSetChanged()
-//            data?.getStringExtra(CameraActivity.EXTRA_REPLY)?.let {
-//                Log.w("insert", "Jestem-0.7" )
-//                val photoModel = PhotoModel("photo", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH).format(System.currentTimeMillis()), it)
-//                Log.w("insert", "Jestem-0.5" )
-//                homeViewModel.insert(photoModel)
-//                homeAdapter.notifyDataSetChanged()
-//            }
-            Log.w("insert", "Jestem10" )
-        } else {
-            Toast.makeText(
-                applicationContext,
-                "Not saved",
-                Toast.LENGTH_LONG).show()
+        if(resultCode == Activity.RESULT_OK){
+            when (requestCode) {
+                newPhotoActivityRequestCode -> {
+                    val it = data?.extras?.getString(CameraActivity.EXTRA_REPLY)
+                    val photoModel = PhotoModel("photo", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH).format(System.currentTimeMillis()), it!!)
+                    homeViewModel.insert(photoModel)
+                    homeAdapter.notifyDataSetChanged()
+                    val intent = Intent(this, FilterActivity::class.java).apply {
+                        putExtra(EXTRA_MESSAGE, photoModel.location)
+                    }
+                    startActivityForResult(intent, 2)
+                }
+                newFilterActivityRequestCode -> {
+                    val it = data?.extras?.getString(FilterActivity.EXTRA_REPLY)
+                    val photoModel = PhotoModel("photo", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH).format(System.currentTimeMillis()), it!!)
+                    homeViewModel.update(photoModel)
+                    homeAdapter.notifyDataSetChanged()
+                }
+                else -> Toast.makeText( applicationContext,"request code is neither 1 nor 2", Toast.LENGTH_LONG).show()
+            }
+        }else{
+            Toast.makeText( applicationContext,"Not saved", Toast.LENGTH_LONG).show()
         }
     }
 

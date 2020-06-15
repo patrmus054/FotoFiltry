@@ -1,10 +1,7 @@
 package com.example.fotofiltry.data;
 
-import androidx.lifecycle.LiveData
-import androidx.room.Dao;
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query;
+import androidx.room.*
+
 
 @Dao
 interface PhotoModelDAO {
@@ -13,6 +10,9 @@ interface PhotoModelDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(photoModel: PhotoModel)
+
+    @Update
+    suspend fun update(photo: PhotoModel)
 
     @Query("DELETE FROM photo_table")
     suspend fun deleteAll()
