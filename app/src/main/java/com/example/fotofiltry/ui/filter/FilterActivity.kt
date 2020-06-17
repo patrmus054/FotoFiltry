@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.AlarmClock
+import android.view.Menu
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -41,5 +42,12 @@ class FilterActivity : AppCompatActivity() {
     }
     private fun setUpToolbar(){
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#999999")))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_filter_menu,menu)
+
+        return super.onCreateOptionsMenu(menu)
+
     }
 }
