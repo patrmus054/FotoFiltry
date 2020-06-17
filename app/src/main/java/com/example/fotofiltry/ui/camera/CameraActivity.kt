@@ -3,9 +3,10 @@ package com.example.fotofiltry.ui.camera
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
-class CameraActivity: AppCompatActivity() {
+class CameraActivity : AppCompatActivity() {
 
 
     private var preview: Preview? = null
@@ -32,7 +33,6 @@ class CameraActivity: AppCompatActivity() {
     private var camera: Camera? = null
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
-
 
 
     companion object {
@@ -47,18 +47,19 @@ class CameraActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
-
+        setUpToolbar()
         // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+            )
         }
 
         // Setup the listener for take photo button
         camera_capture_button.setOnClickListener {
-                takePhoto()
+            takePhoto()
             Toast.makeText(baseContext, "JESTEM", Toast.LENGTH_SHORT).show()
         }
 
@@ -71,7 +72,8 @@ class CameraActivity: AppCompatActivity() {
 
         cameraProviderFuture.addListener(Runnable {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+            val cameraSelector =
+                CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
             imageCapture = ImageCapture.Builder().build()
             preview = Preview.Builder().build()
 
@@ -81,7 +83,7 @@ class CameraActivity: AppCompatActivity() {
                 camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
                 preview?.setSurfaceProvider(viewFinder.createSurfaceProvider())
 
-            } catch(exc: Exception) {
+            } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
         }, ContextCompat.getMainExecutor(this))
@@ -92,9 +94,18 @@ class CameraActivity: AppCompatActivity() {
     private fun takePhoto() {
 
         val imageCapture = imageCapture ?: return
-        val photoFile = File(outputDirectory,SimpleDateFormat(FILENAME_FORMAT, Locale.ENGLISH).format(System.currentTimeMillis()) + ".jpg")
+        val photoFile = File(
+            outputDirectory,
+            SimpleDateFormat(
+                FILENAME_FORMAT,
+                Locale.ENGLISH
+            ).format(System.currentTimeMillis()) + ".jpg"
+        )
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-        imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
+        imageCapture.takePicture(
+            outputOptions,
+            ContextCompat.getMainExecutor(this),
+            object : ImageCapture.OnImageSavedCallback {
 
                 override fun onError(exc: ImageCaptureException) {
                     Toast.makeText(baseContext, "dupa", Toast.LENGTH_SHORT).show()
@@ -120,22 +131,35 @@ class CameraActivity: AppCompatActivity() {
 
 
     fun getOutputDirectory(): File {
-        val mediaDir = externalMediaDirs.firstOrNull()?.let { File(it, resources.getString(R.string.app_name)).apply { mkdirs() } }
+        val mediaDir = externalMediaDirs.firstOrNull()
+            ?.let { File(it, resources.getString(R.string.app_name)).apply { mkdirs() } }
 
         return if (mediaDir != null && mediaDir.exists())
             mediaDir else filesDir
     }
 
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults:IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
-                Toast.makeText(this,"Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT)
+                    .show()
                 finish()
             }
         }
     }
 
+    private fun setUpToolbar() {
+
+        supportActionBar?.title = "Camera"
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#999999")))
+
+
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.fotofiltry.ui.filter
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.AlarmClock
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -38,10 +40,6 @@ class FilterActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
     private fun setUpToolbar(){
-        val toolbar = findViewById<Toolbar>(R.id.filter_toolbar)
-        setSupportActionBar(toolbar)
-        toolbar?.title = "Filter"
-        toolbar?.navigationIcon = ContextCompat.getDrawable(this,R.drawable.ic_baseline_save_24)
-        toolbar?.setNavigationOnClickListener {}
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#999999")))
     }
 }
