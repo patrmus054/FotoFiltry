@@ -11,7 +11,7 @@ import kotlin.math.round
 object Filters {
 
 
-    fun blurFilter(context: Context, inputPath: String, outputPath: String) {
+    fun blurFilter(context: Context, inputPath: String):Bitmap {
         val BITMAP_SCALE = 0.7f;
         val BLUR_RADIUS = 15f;
         val originalBitmap = BitmapFactory.decodeFile(inputPath)
@@ -28,23 +28,32 @@ object Filters {
         theIntrinsic.setInput(tmpIn)
         theIntrinsic.forEach(tmpOut)
         tmpOut.copyTo(outputBitmap)
-
-        val outputStream = FileOutputStream(outputPath)
-        outputBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.flush()
-        outputStream.close()
         val exifI = ExifInterface(inputPath)
-        val newExifI = ExifInterface(outputPath)
-        newExifI.setAttribute(
-            ExifInterface.TAG_ORIENTATION,
-            exifI.getAttribute(ExifInterface.TAG_ORIENTATION)
+        val rotation = exifToDegrees(
+            exifI.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            )
         )
-        newExifI.saveAttributes()
+        val matrix = Matrix();
+        if (rotation != 0) {
+            matrix.preRotate(rotation.toFloat())
+        }
+        val rotatedBitmap = Bitmap.createBitmap(
+            outputBitmap,
+            0,
+            0,
+            originalBitmap.width,
+            originalBitmap.height,
+            matrix,
+            false
+        )
+        return rotatedBitmap
 
 
     }
 
-    fun grayscaleFilter(inputPath: String):Bitmap {
+    fun grayscaleFilter(inputPath: String): Bitmap {
         val originalBitmap = BitmapFactory.decodeFile(inputPath)
         var width = originalBitmap.width
         var height = originalBitmap.height
@@ -55,12 +64,19 @@ object Filters {
         colorMatrix.setSaturation(0f)
         val colorMatrixFilter = ColorMatrixColorFilter(colorMatrix)
         paint.colorFilter = colorMatrixFilter
-        canvas.drawBitmap(originalBitmap, 0f,0f, paint)
+        canvas.drawBitmap(originalBitmap, 0f, 0f, paint)
         val exifI = ExifInterface(inputPath)
-        val rotation = exifToDegrees(exifI.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL))
-        val matrix =  Matrix();
-        if (rotation != 0) {matrix.preRotate(rotation.toFloat())}
-        val rotatedBitmap = Bitmap.createBitmap(modifiedBitmap,0,0,width,height,matrix,false)
+        val rotation = exifToDegrees(
+            exifI.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            )
+        )
+        val matrix = Matrix();
+        if (rotation != 0) {
+            matrix.preRotate(rotation.toFloat())
+        }
+        val rotatedBitmap = Bitmap.createBitmap(modifiedBitmap, 0, 0, width, height, matrix, false)
         return rotatedBitmap
     }
 
@@ -89,16 +105,24 @@ object Filters {
         output.copyTo(modifiedBitmap)
         renderScript.destroy()
         val exifI = ExifInterface(inputPath)
-        val rotation = exifToDegrees(exifI.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL))
-        val matrix =  Matrix();
-        if (rotation != 0) {matrix.preRotate(rotation as Float)}
-        val rotatedBitmap = Bitmap.createBitmap(modifiedBitmap,0,0,width,height,matrix,false)
+        val rotation = exifToDegrees(
+            exifI.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            )
+        )
+        val matrix = Matrix();
+        if (rotation != 0) {
+            matrix.preRotate(rotation as Float)
+        }
+        val rotatedBitmap = Bitmap.createBitmap(modifiedBitmap, 0, 0, width, height, matrix, false)
         val outputStream = FileOutputStream(outputPath)
         modifiedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         outputStream.flush()
         outputStream.close()
 
     }
+
     private fun exifToDegrees(exifOrientation: Int): Int {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
             return 90

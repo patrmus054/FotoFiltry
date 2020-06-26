@@ -17,7 +17,7 @@ import java.io.FileOutputStream
 //Grayscale fragment
 class FilterOneFragment : Fragment() {
 
-    private lateinit var filteredBitmap: Bitmap
+
     private val viewModel: SharedFilterFragmentViewmodel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
