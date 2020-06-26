@@ -51,8 +51,15 @@ class SharedFilterFragmentViewmodel() : ViewModel() {
             _isLoading.postValue(false)
         }
     }
-    fun makeSharp(inputPath: String){
+    fun makeSharp(inputPath: String,context: Context){
+        Log.e("myapp","Run sharp")
 
+        GlobalScope.launch(Dispatchers.IO) {
+            _isLoading.postValue(true)
+            val modifiedBitmap = Filters.sharpFilter(context,inputPath)
+            _sharpBitmap.postValue(modifiedBitmap)
+            _isLoading.postValue(false)
+        }
     }
 
 

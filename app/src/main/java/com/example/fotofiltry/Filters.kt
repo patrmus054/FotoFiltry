@@ -4,14 +4,13 @@ import android.content.Context
 import android.graphics.*
 import android.media.ExifInterface
 import android.renderscript.*
-import java.io.FileOutputStream
 import kotlin.math.round
 
 
 object Filters {
 
 
-    fun blurFilter(context: Context, inputPath: String):Bitmap {
+    fun blurFilter(context: Context, inputPath: String): Bitmap {
         val BITMAP_SCALE = 0.7f;
         val BLUR_RADIUS = 15f;
         val originalBitmap = BitmapFactory.decodeFile(inputPath)
@@ -80,7 +79,7 @@ object Filters {
         return rotatedBitmap
     }
 
-    fun sharpFilter(context: Context, inputPath: String, outputPath: String) {
+    fun sharpFilter(context: Context, inputPath: String): Bitmap {
         val sharp_values = floatArrayOf(0f, -1f, 0f, -1f, 5f, -1f, 0f, -1f, 0f)
 
 
@@ -113,13 +112,10 @@ object Filters {
         )
         val matrix = Matrix();
         if (rotation != 0) {
-            matrix.preRotate(rotation as Float)
+            matrix.preRotate(rotation.toFloat())
         }
         val rotatedBitmap = Bitmap.createBitmap(modifiedBitmap, 0, 0, width, height, matrix, false)
-        val outputStream = FileOutputStream(outputPath)
-        modifiedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.flush()
-        outputStream.close()
+        return rotatedBitmap
 
     }
 
