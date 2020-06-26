@@ -14,9 +14,9 @@ import com.example.fotofiltry.R
 import com.example.fotofiltry.ui.filter.FilterActivity
 import kotlinx.android.synthetic.main.fragment_filter_1.*
 import java.io.FileOutputStream
-
+//Grayscale fragment
 class FilterOneFragment : Fragment() {
-   // private lateinit var inputPath: String;
+
     private lateinit var filteredBitmap: Bitmap
     private val viewModel: SharedFilterFragmentViewmodel by viewModels()
     override fun onCreateView(
@@ -29,32 +29,41 @@ class FilterOneFragment : Fragment() {
     }
 
 
+    override fun onResume() {
+        super.onResume()
 
-    override fun onStart(){
-        super.onStart()
-        img_filter_1.setImageBitmap(viewModel.grayScaleBitmap.value)
+
     }
 
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         viewModel.grayScaleBitmap.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                img_filter_1.setImageBitmap(it)
 
-            img_filter_1.setImageBitmap(it)
-
-
+            }
         })
         viewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            if (it) {
+            if(it){
                 progressBar.visibility = View.VISIBLE
-            } else {
+            }else{
                 progressBar.visibility = View.GONE
             }
         })
 
-        Log.e("myapp","Start gray")
-        viewModel.makeGrayScale(FilterActivity.inputPath)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        Log.e("myapp", "Start gray")
+
+            if(viewModel.grayScaleBitmap.value == null) {
+                viewModel.makeGrayScale(FilterActivity.inputPath)
+
+            }
 
 
     }
