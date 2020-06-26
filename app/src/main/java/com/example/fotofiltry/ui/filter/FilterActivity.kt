@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.AlarmClock
+import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.Menu
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -17,11 +18,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.fotofiltry.R
 import com.example.fotofiltry.data.PhotoModel
 import com.example.fotofiltry.ui.camera.CameraActivity
+import com.example.fotofiltry.ui.home.HomeActivity
 
 class FilterActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_REPLY = "com.example.fotofiltry.ui.filter.ui.REPLY"
+        var inputPath = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +42,8 @@ class FilterActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        inputPath = intent?.extras?.get(EXTRA_MESSAGE).toString()
+
     }
     private fun setUpToolbar(){
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#999999")))
