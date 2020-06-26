@@ -29,10 +29,10 @@ class FilterOneFragment : Fragment() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-
-
+    override fun onStop() {
+        super.onStop()
+        viewModel.grayScaleBitmap.removeObservers(viewLifecycleOwner)
+        viewModel.isLoading.removeObservers(viewLifecycleOwner)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
