@@ -1,12 +1,15 @@
 package com.example.fotofiltry.ui.filter
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.AlarmClock
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.util.Log
 import android.view.Menu
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -55,4 +58,14 @@ class FilterActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
 
     }
+    fun backToHome(){
+        val replyIntent = Intent()
+        replyIntent.putExtra(EXTRA_REPLY, inputPath)
+        setResult(Activity.RESULT_OK, replyIntent)
+        Toast.makeText(baseContext, "Saved", Toast.LENGTH_SHORT).show()
+        Log.d("myapp", "saved")
+        finish()
+
+    }
+
 }
