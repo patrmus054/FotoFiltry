@@ -1,5 +1,6 @@
 package com.example.fotofiltry.ui.home
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fotofiltry.R
 import com.example.fotofiltry.data.PhotoModel
 import com.example.fotofiltry.databinding.ItemListBinding
+import com.example.fotofiltry.ui.details.DetailsPhotoActivity
 import java.io.File
 
 
@@ -36,7 +38,11 @@ class HomeItemAdapter (private val list: MutableList<PhotoModel>, val fragmentMa
         val model: PhotoModel = list[position]
         holder.bind(model, object : HomeListener{
             override fun onItemSelected(item: PhotoModel) {
-                TODO("Not yet implemented")
+                val context = holder.itemView.context
+                val intent = Intent(context,DetailsPhotoActivity::class.java)
+                intent.putExtra("photoId",item.photoId)
+                context.startActivity(intent)
+
             }
         })
         holder.itemView.setOnClickListener{

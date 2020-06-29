@@ -16,4 +16,11 @@ interface PhotoModelDAO {
 
     @Query("DELETE FROM photo_table")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM photo_table WHERE photoId = :id")
+    suspend fun deleteById(id:Int)
+
+    @Query("SELECT * FROM photo_table WHERE photoID = :id")
+    suspend fun getDetailsById(id:Int):PhotoModel
+
 }

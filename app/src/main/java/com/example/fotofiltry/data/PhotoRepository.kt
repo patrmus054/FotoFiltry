@@ -14,4 +14,11 @@ class PhotoRepository(private val PhotoDao: PhotoModelDAO) {
     suspend fun update(photo: PhotoModel){
         PhotoDao.update(photo)
     }
+
+    suspend fun deletePhoto(id:Int){
+        PhotoDao.deleteById(id)
+    }
+    suspend fun getDetailsById(id:Int):PhotoModel{
+       return PhotoDao.getDetailsById(id)
+    }
 }

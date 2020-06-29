@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fotofiltry.R
 import com.example.fotofiltry.data.PhotoModel
 import com.example.fotofiltry.ui.camera.CameraActivity
@@ -23,7 +24,7 @@ import java.util.*
 
 class HomeActivity : AppCompatActivity() {
 
-    lateinit var itemList: MutableList<PhotoModel>
+    var itemList: MutableList<PhotoModel> = mutableListOf()
     lateinit var homeAdapter: HomeItemAdapter
     lateinit var homeViewModel: HomeViewModel
     private val newPhotoActivityRequestCode = 1
@@ -36,9 +37,18 @@ class HomeActivity : AppCompatActivity() {
         setUpToolbar()
 
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        homeViewModel.getAllPhotos()
+//        homeViewModel.getAllPhotos()
+        homeAdapter = HomeItemAdapter(itemList, supportFragmentManager)
 
+        rv_home.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity)
+            adapter = homeAdapter
+        }
+        homeViewModel.item.observe(this, Observer {
+            homeAdapter.setList(it)
+        })
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -88,17 +98,11 @@ class HomeActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        itemList = mutableListOf()
-        homeAdapter = HomeItemAdapter(itemList, supportFragmentManager)
+       // itemList = mutableListOf()
 
-        rv_home.apply {
-            layoutManager = GridLayoutManager(this@HomeActivity, 2)
-            adapter = homeAdapter
-        }
-        homeViewModel.item.observe(this, Observer {
-            homeAdapter.setList(it)
-        })
+        homeViewModel.getAllPhotos()
     }
+
 
     private fun setUpToolbar() {
 

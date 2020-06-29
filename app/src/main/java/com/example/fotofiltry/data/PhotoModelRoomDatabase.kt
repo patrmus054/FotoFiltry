@@ -47,7 +47,7 @@ abstract class PhotoModelRoomDatabase : RoomDatabase(){
         }
 
         suspend fun populateDatabase(photoDao: PhotoModelDAO) {
-            photoDao.deleteAll()
+            //photoDao.deleteAll()
 //            photoDao.insert(PhotoModel(0,"photo1","30.04.2020"))
 //            photoDao.insert(PhotoModel(1,"photo2","31.04.2020"))
 //            photoDao.insert(PhotoModel(2,"photo3","29.04.2020"))
