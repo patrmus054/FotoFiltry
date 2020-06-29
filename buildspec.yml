@@ -7,6 +7,8 @@ phases:
   pre_build:
     commands:
       - echo Pre Build started on `date`
+      - apt-get install openjdk-8-jdk
+      - java -version
       - wget http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
       - tar -xvf android-sdk_r24.4.1-linux.tgz
       - mv android-sdk-linux /opt/
